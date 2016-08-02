@@ -243,6 +243,17 @@ module.exports = function(grunt) {
             }
         },
 
+        injector: {
+            options: {
+                destFile : "<%= project.index%>",
+            },
+            files: {
+                expand: true,
+                cwd: "<%= project.src%>",
+                src: ["**/*.js"]
+            }
+        },
+
         usemin: {
             html: [
                 "<%= project.dist%>/index.html"
@@ -261,6 +272,7 @@ module.exports = function(grunt) {
         "copy:fonts",
         "less",
         "wiredep:app",
+        "injector",
         "connect",
         "watch:dev"
     ]);
@@ -268,6 +280,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask("dist", [
         "wiredep:app",
+        "injector",
         "wiredep:style",
         "jshint:dev",
         "jscs:dev",
