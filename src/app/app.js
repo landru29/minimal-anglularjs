@@ -3,5 +3,6 @@ angular.module("application", [
     "pascalprecht.translate",
     "ui.router",
     "ngCookies",
-    "ngSanitize"
+    "ngSanitize",
+    "applicationConfiguration"
 ]);

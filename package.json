@@ -27,12 +27,12 @@
     "grunt-injector": "^1.0.1",
     "grunt-jscs": "^3.0.1",
     "grunt-ng-annotate": "1.0.1",
+    "grunt-ng-constant": "^2.0.1",
     "grunt-usemin": "3.0.0",
     "grunt-wiredep": "1.8.0",
     "lodash": "^4.14.1",
     "matchdep": "1.0.1",
     "node-xml-lite": "0.0.7"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

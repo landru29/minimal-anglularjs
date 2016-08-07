@@ -6,6 +6,8 @@ module.exports = function(grunt) {
 
     var path = require("path");
 
+    grunt.configData = {};
+
     // Load Grunt tasks declared in the package.json file
     require("matchdep").filterDev("grunt-*").forEach(grunt.loadNpmTasks);
     grunt.loadTasks('./tasks');
@@ -245,13 +247,28 @@ module.exports = function(grunt) {
 
         injector: {
             options: {
-                destFile : "<%= project.index%>",
+                destFile: "<%= project.index%>",
+                ignorePath: "src"
             },
             files: {
+                flatten: false,
                 expand: true,
                 cwd: "<%= project.src%>",
                 src: ["**/*.js"]
             }
+        },
+
+        ngconstant: {
+            options: {
+                name: "applicationConfiguration",
+                dest: "<%= project.build%>/config.js",
+                constants: function() {
+                    return {
+                        CONFIG: grunt.configData
+                    };
+                }
+            },
+            build: {}
         },
 
         usemin: {
@@ -265,10 +282,20 @@ module.exports = function(grunt) {
 
     });
 
+    grunt.registerTask("get-config", "Inject configuration", function() {
+        var filename = "config/" + ["config"].concat(this.args).concat(["json"]).join(".");
+        grunt.log.writeln("Injecting " + filename);
+        grunt.configData = grunt.file.readJSON(filename);
+        console.log(grunt.configData);
+        grunt.task.run("ngconstant");
+    });
+
+
     grunt.registerTask("serve", [
         "clean:dev",
         "wiredep:style",
         "translation",
+        "get-config:dev",
         "copy:fonts",
         "less",
         "wiredep:app",
@@ -285,6 +312,7 @@ module.exports = function(grunt) {
         "jshint:dev",
         "jscs:dev",
         "clean:dist",
+        "get-config:dist",
         "translation",
         "copy:translations",
         "copy:fonts",
